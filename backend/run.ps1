@@ -14,4 +14,4 @@ if (-not (Test-Path "venv")) {
 
 # Start server
 Write-Host "Starting server on http://localhost:8000" -ForegroundColor Green
-uvicorn main:app --reload
+python -m uvicorn main:app --reload

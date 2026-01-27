@@ -11,7 +11,7 @@ router = APIRouter(prefix="/brokers", tags=["Brokers"])
 
 @router.get("/ohlc")
 async def get_ohlc(
-    broker: str = Query(..., description="Broker name (e.g., 'paper')"),
+    broker: str = Query(..., description="Broker name (e.g., 'binance')"),
     symbol: str = Query(..., description="Trading symbol (e.g., 'BTCUSDT')"),
     interval: str = Query(..., description="Time interval (e.g., '1h', '1d', '5m')"),
     limit: Optional[int] = Query(None, description="Number of candles to return (default: 100)"),
@@ -22,7 +22,7 @@ async def get_ohlc(
     Get OHLC (Open, High, Low, Close) data from a broker.
     
     Args:
-        broker: Broker name (e.g., "paper")
+        broker: Broker name (e.g., "binance")
         symbol: Trading symbol (e.g., "BTCUSDT")
         interval: Time interval (e.g., "1h", "1d", "5m")
         limit: Maximum number of candles (optional)

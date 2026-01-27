@@ -4,13 +4,14 @@ All brokers must implement this interface.
 """
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
+from core.candle import Candle
 
 
 class BrokerBase(ABC):
     """
     Abstract base class for all broker implementations.
     
-    This ensures all brokers (PaperBroker, Binance, Fyers, etc.)
+    This ensures all brokers (Binance, Fyers, etc.)
     implement the same interface, allowing strategies to work
     with any broker without knowing the implementation details.
     """
@@ -23,7 +24,7 @@ class BrokerBase(ABC):
         limit: Optional[int] = None,
         start_time: Optional[int] = None,
         end_time: Optional[int] = None
-    ) -> List[Dict[str, Any]]:
+    ) -> List[Candle]:
         """
         Fetch OHLC (Open, High, Low, Close) data for a symbol.
         
@@ -35,7 +36,7 @@ class BrokerBase(ABC):
             end_time: End timestamp in milliseconds (optional)
             
         Returns:
-            List of candle dictionaries with keys:
+            List of Candle objects with normalized format:
             - timestamp: int (milliseconds)
             - open: float
             - high: float
@@ -81,6 +82,6 @@ class BrokerBase(ABC):
         Get the broker name.
         
         Returns:
-            Broker name (e.g., "paper", "binance", "fyers")
+            Broker name (e.g., "binance", "fyers")
         """
         pass

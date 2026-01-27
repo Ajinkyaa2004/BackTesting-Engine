@@ -4,7 +4,7 @@ Uses factory pattern for centralized broker creation.
 """
 from typing import Optional
 from brokers.base import BrokerBase
-from brokers.paper import PaperBroker
+from brokers.binance import BinanceBroker
 
 
 class BrokerFactory:
@@ -12,14 +12,13 @@ class BrokerFactory:
     Factory class for creating broker instances.
     
     This centralizes broker creation logic and makes it easy
-    to add new brokers in the future (Binance, Fyers, etc.).
+    to add new brokers in the future (Fyers, etc.).
     """
     
     # Registry of available brokers
     _brokers = {
-        "paper": PaperBroker,
+        "binance": BinanceBroker,
         # Future brokers will be added here:
-        # "binance": BinanceBroker,
         # "fyers": FyersBroker,
     }
     
@@ -29,7 +28,7 @@ class BrokerFactory:
         Create a broker instance by name.
         
         Args:
-            broker_name: Name of the broker (e.g., "paper", "binance")
+            broker_name: Name of the broker (e.g., "binance")
             
         Returns:
             Broker instance implementing BrokerBase
