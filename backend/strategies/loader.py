@@ -3,7 +3,7 @@ Dynamic strategy loader - loads strategy classes from code strings.
 """
 import importlib.util
 import sys
-from typing import Type, Optional
+from typing import Type, Optional, Dict, Any
 from strategies.base import BaseStrategy
 
 
@@ -79,7 +79,8 @@ class StrategyLoader:
     def create_strategy_instance(
         code: str,
         class_name: str,
-        broker
+        broker,
+        config: Optional[Dict[str, Any]] = None
     ) -> BaseStrategy:
         """
         Create a strategy instance from code.
@@ -88,6 +89,7 @@ class StrategyLoader:
             code: Python code as string
             class_name: Name of the class to instantiate
             broker: Broker instance to pass to strategy
+            config: Optional configuration dictionary
             
         Returns:
             Strategy instance
@@ -97,6 +99,11 @@ class StrategyLoader:
         """
         try:
             strategy_class = StrategyLoader.load_strategy_class(code, class_name)
-            return strategy_class(broker)
+            # Try with config first, fallback to broker-only for backward compatibility
+            try:
+                return strategy_class(broker, config)
+            except TypeError:
+                # Old strategy format (broker only) - backward compatible
+                return strategy_class(broker)
         except Exception as e:
             raise ValueError(f"Failed to create strategy instance: {str(e)}")

@@ -16,15 +16,17 @@ class BacktestingEngine:
     Backtesting engine that executes strategies on historical candles.
     """
     
-    def __init__(self, initial_capital: float = 10000.0):
+    def __init__(self, initial_capital: float = 10000.0, max_positions: int = 1):
         """
         Initialize backtesting engine.
         
         Args:
             initial_capital: Starting capital for backtest
+            max_positions: Maximum concurrent positions allowed
         """
         self.initial_capital = initial_capital
         self.capital = initial_capital
+        self.max_positions = max_positions
         self.positions: List[Position] = []
         self.closed_trades: List[Dict[str, Any]] = []
         self.equity_curve: List[float] = []
@@ -38,7 +40,8 @@ class BacktestingEngine:
         interval: str,
         start_time: Optional[int] = None,
         end_time: Optional[int] = None,
-        limit: Optional[int] = None
+        limit: Optional[int] = None,
+        config: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
         Run backtest on historical data.
@@ -77,11 +80,20 @@ class BacktestingEngine:
         if not candles:
             raise ValueError("No historical data available for backtest")
         
+        # Prepare strategy config
+        strategy_config = config or {}
+        strategy_config.update({
+            "max_positions": self.max_positions,
+            "initial_capital": self.initial_capital,
+            "risk_per_trade": strategy_config.get("risk_per_trade", 0.02)
+        })
+        
         # Load and instantiate strategy
         strategy = StrategyLoader.create_strategy_instance(
             code=strategy_code,
             class_name=class_name,
-            broker=broker
+            broker=broker,
+            config=strategy_config
         )
         
         # Initialize strategy
@@ -138,46 +150,110 @@ class BacktestingEngine:
                 self._close_position(position, exit_price, "TAKE_PROFIT", candle.timestamp)
                 continue
         
-        # Get strategy signal
-        order = strategy.on_candle(candle)
+        # Get strategy signal (can be None, single order, or list of orders)
+        order_result = strategy.on_candle(candle)
         
-        if order:
-            self._execute_order(order, candle)
+        if order_result:
+            # Handle both single order and list of orders
+            if isinstance(order_result, list):
+                for order in order_result:
+                    if order:
+                        self._execute_order(order, candle)
+            else:
+                self._execute_order(order_result, candle)
         
         # Update equity curve
         self._update_equity_curve(candle)
     
     def _execute_order(self, order: Dict[str, Any], candle: Candle):
         """
-        Execute an order (simulated).
+        Execute an order (simulated) - Enhanced to support all order types.
         
-        Args:
-            order: Order dictionary from strategy
-            candle: Current candle
+        Supported actions:
+        - BUY: Open LONG position
+        - SELL: Open SHORT position (if no LONG position) or close LONG position
+        - CLOSE: Close specific position
+        - CLOSE_ALL: Close all positions
         """
         action = order.get("action", "").upper()
         quantity = order.get("quantity", 0)
         order_type = order.get("order_type", "MARKET").upper()
         price = order.get("price")
         stop_loss = order.get("stop_loss")
+        stop_loss_pct = order.get("stop_loss_pct")
         take_profit = order.get("take_profit")
+        take_profit_pct = order.get("take_profit_pct")
         trailing_stop = order.get("trailing_stop")
+        position_side = order.get("position_side", "LONG").upper()
+        exit_reason = order.get("exit_reason", "STRATEGY_SIGNAL")
         
+        # Handle CLOSE_ALL action
+        if action == "CLOSE_ALL":
+            for position in self.positions[:]:
+                fill_price = candle.close
+                self._close_position(position, fill_price, exit_reason, candle.timestamp)
+            return
+        
+        # Handle CLOSE action (close specific position)
+        if action == "CLOSE":
+            if not self.positions:
+                return
+            
+            # Find position to close (by side if specified)
+            position = None
+            if position_side:
+                for pos in self.positions:
+                    if pos.side == position_side:
+                        position = pos
+                        break
+            else:
+                # Close first position (FIFO)
+                position = self.positions[0] if self.positions else None
+            
+            if position:
+                fill_price = candle.close if order_type == "MARKET" or price is None else price
+                if order_type == "LIMIT" and price:
+                    if not (candle.low <= price <= candle.high):
+                        return  # Limit not filled
+                self._close_position(position, fill_price, exit_reason, candle.timestamp)
+            return
+        
+        # Calculate stop loss and take profit from percentages if provided
+        entry_price = price if price else candle.close
+        
+        if stop_loss_pct and not stop_loss:
+            if action == "BUY" or position_side == "LONG":
+                stop_loss = entry_price * (1 - stop_loss_pct)
+            else:  # SHORT
+                stop_loss = entry_price * (1 + stop_loss_pct)
+        
+        if take_profit_pct and not take_profit:
+            if action == "BUY" or position_side == "LONG":
+                take_profit = entry_price * (1 + take_profit_pct)
+            else:  # SHORT
+                take_profit = entry_price * (1 - take_profit_pct)
+        
+        # Handle BUY action
         if action == "BUY":
             # Determine fill price
             if order_type == "MARKET" or price is None:
                 fill_price = candle.close
-            else:  # LIMIT order
-                # Fill if limit price is touched during candle
+            elif order_type == "LIMIT":
                 if candle.low <= price <= candle.high:
                     fill_price = price
                 else:
                     return  # Order not filled
+            else:
+                fill_price = candle.close  # Default to market
             
             # Check if we have enough capital
             cost = fill_price * quantity
             if cost > self.capital:
                 return  # Insufficient capital
+            
+            # Check max positions limit
+            if len(self.positions) >= self.max_positions:
+                return
             
             # Open LONG position
             position = Position(
@@ -192,34 +268,61 @@ class BacktestingEngine:
             self.positions.append(position)
             self.capital -= cost
         
+        # Handle SELL action
         elif action == "SELL":
-            # Check if we have a position to close
-            if not self.positions:
-                return
+            # Check if we have LONG positions to close
+            long_positions = [p for p in self.positions if p.side == "LONG"]
             
-            # Find LONG position to close (FIFO - first in, first out)
-            position = None
-            for pos in self.positions:
-                if pos.side == "LONG":
-                    position = pos
-                    break
-            
-            # If no LONG position found, ignore SELL order
-            if position is None:
-                return
-            
-            # Determine fill price
-            if order_type == "MARKET" or price is None:
-                fill_price = candle.close
-            else:  # LIMIT order
-                if candle.low <= price <= candle.high:
-                    fill_price = price
+            if long_positions:
+                # Close first LONG position (FIFO)
+                position = long_positions[0]
+                
+                # Determine fill price
+                if order_type == "MARKET" or price is None:
+                    fill_price = candle.close
+                elif order_type == "LIMIT":
+                    if candle.low <= price <= candle.high:
+                        fill_price = price
+                    else:
+                        return  # Order not filled
                 else:
-                    return  # Order not filled
-            
-            # Close position
-            exit_reason = order.get("exit_reason", "STRATEGY_SIGNAL")
-            self._close_position(position, fill_price, exit_reason, candle.timestamp)
+                    fill_price = candle.close
+                
+                self._close_position(position, fill_price, exit_reason, candle.timestamp)
+            else:
+                # No LONG position - open SHORT position
+                # Determine fill price
+                if order_type == "MARKET" or price is None:
+                    fill_price = candle.close
+                elif order_type == "LIMIT":
+                    if candle.low <= price <= candle.high:
+                        fill_price = price
+                    else:
+                        return  # Order not filled
+                else:
+                    fill_price = candle.close
+                
+                # Check max positions limit
+                if len(self.positions) >= self.max_positions:
+                    return
+                
+                # For SHORT, we need margin (simplified: same as cost)
+                margin_required = fill_price * quantity
+                if margin_required > self.capital:
+                    return  # Insufficient capital
+                
+                # Open SHORT position
+                position = Position(
+                    side="SHORT",
+                    entry_price=fill_price,
+                    quantity=quantity,
+                    entry_time=candle.timestamp,
+                    stop_loss=stop_loss,
+                    take_profit=take_profit,
+                    trailing_stop=trailing_stop
+                )
+                self.positions.append(position)
+                self.capital -= margin_required  # Reserve margin
     
     def _close_position(
         self,
@@ -230,6 +333,7 @@ class BacktestingEngine:
     ):
         """
         Close a position and record the trade.
+        Enhanced to handle both LONG and SHORT positions.
         
         Args:
             position: Position to close
@@ -242,7 +346,15 @@ class BacktestingEngine:
         
         # Calculate P&L
         pnl = position.calculate_realized_pnl(exit_price)
-        self.capital += (exit_price * position.quantity)  # Return capital
+        
+        # Return capital/margin based on position side
+        if position.side == "LONG":
+            # Return capital from sale
+            self.capital += (exit_price * position.quantity)
+        else:  # SHORT
+            # Return margin + profit (or subtract loss)
+            self.capital += (position.entry_price * position.quantity)  # Return margin
+            self.capital += pnl  # Add profit (pnl is positive for profit, negative for loss)
         
         # Record trade
         trade = {

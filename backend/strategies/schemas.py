@@ -39,6 +39,8 @@ class BacktestRequest(BaseModel):
     end_time: Optional[int] = Field(None, description="End timestamp in milliseconds")
     limit: Optional[int] = Field(None, description="Maximum number of candles")
     initial_capital: float = Field(10000.0, description="Initial capital for backtest", gt=0)
+    max_positions: Optional[int] = Field(1, description="Maximum concurrent positions", ge=1)
+    risk_per_trade: Optional[float] = Field(0.02, description="Risk per trade as decimal (0.02 = 2%)", ge=0, le=1)
 
 
 class Trade(BaseModel):

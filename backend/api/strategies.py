@@ -177,7 +177,18 @@ async def run_backtest(
     
     # Run backtest
     try:
-        engine = BacktestingEngine(initial_capital=backtest_request.initial_capital)
+        engine = BacktestingEngine(
+            initial_capital=backtest_request.initial_capital,
+            max_positions=backtest_request.max_positions or 1
+        )
+        
+        # Prepare strategy config
+        strategy_config = {
+            "max_positions": backtest_request.max_positions or 1,
+            "initial_capital": backtest_request.initial_capital,
+            "risk_per_trade": backtest_request.risk_per_trade or 0.02
+        }
+        
         results = engine.run_backtest(
             strategy_code=strategy.code,
             class_name=strategy.class_name,
@@ -186,7 +197,8 @@ async def run_backtest(
             interval=backtest_request.interval,
             start_time=backtest_request.start_time,
             end_time=backtest_request.end_time,
-            limit=backtest_request.limit
+            limit=backtest_request.limit,
+            config=strategy_config
         )
     except Exception as e:
         raise HTTPException(
