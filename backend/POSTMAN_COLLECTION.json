@@ -1,0 +1,252 @@
+{
+  "info": {
+    "name": "Algo Trading Backend",
+    "description": "Complete API collection for strategy backtesting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"trader@example.com\",\n  \"password\": \"SecurePassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"access_token\", jsonData.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"trader@example.com\",\n  \"password\": \"SecurePassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Brokers",
+      "item": [
+        {
+          "name": "Get Available Brokers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/brokers/available",
+              "host": ["{{base_url}}"],
+              "path": ["brokers", "available"]
+            }
+          }
+        },
+        {
+          "name": "Get OHLC Data",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/brokers/ohlc?broker=binance&symbol=BTCUSDT&interval=1h&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["brokers", "ohlc"],
+              "query": [
+                {
+                  "key": "broker",
+                  "value": "binance"
+                },
+                {
+                  "key": "symbol",
+                  "value": "BTCUSDT"
+                },
+                {
+                  "key": "interval",
+                  "value": "1h"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Strategies",
+      "item": [
+        {
+          "name": "Upload Strategy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"MA Crossover Strategy\",\n  \"description\": \"Simple moving average crossover\",\n  \"class_name\": \"SimpleMACrossover\",\n  \"code\": \"from strategies.base import BaseStrategy\\nfrom core.candle import Candle\\nfrom typing import Optional, Dict\\nfrom strategies import indicators\\n\\nclass SimpleMACrossover(BaseStrategy):\\n    def __init__(self, broker):\\n        super().__init__(broker)\\n        self.fast_period = 10\\n        self.slow_period = 20\\n        self.quantity = 0.001\\n        self.stop_loss_pct = 0.02\\n        self.take_profit_pct = 0.05\\n        self.price_history = []\\n        self.fast_ma = []\\n        self.slow_ma = []\\n        self.position = None\\n        self.entry_price = None\\n        self.initialized = False\\n    \\n    def initialize(self):\\n        self.initialized = True\\n    \\n    def on_candle(self, candle: Candle) -> Optional[Dict]:\\n        if not self.initialized:\\n            self.initialize()\\n        \\n        self.price_history.append(candle.close)\\n        if len(self.price_history) > 100:\\n            self.price_history.pop(0)\\n        \\n        if len(self.price_history) >= self.slow_period:\\n            fast_ma = sum(self.price_history[-self.fast_period:]) / self.fast_period\\n            slow_ma = sum(self.price_history[-self.slow_period:]) / self.slow_period\\n            \\n            self.fast_ma.append(fast_ma)\\n            self.slow_ma.append(slow_ma)\\n            \\n            if len(self.fast_ma) > 50:\\n                self.fast_ma.pop(0)\\n                self.slow_ma.pop(0)\\n            \\n            if self.position == \\\"LONG\\\":\\n                if candle.low <= self.entry_price * (1 - self.stop_loss_pct):\\n                    self.position = None\\n                    return {\\\"action\\\": \\\"SELL\\\", \\\"quantity\\\": self.quantity, \\\"price\\\": None, \\\"order_type\\\": \\\"MARKET\\\", \\\"exit_reason\\\": \\\"STOP_LOSS\\\"}\\n                \\n                if candle.high >= self.entry_price * (1 + self.take_profit_pct):\\n                    self.position = None\\n                    return {\\\"action\\\": \\\"SELL\\\", \\\"quantity\\\": self.quantity, \\\"price\\\": None, \\\"order_type\\\": \\\"MARKET\\\", \\\"exit_reason\\\": \\\"TAKE_PROFIT\\\"}\\n                \\n                if len(self.fast_ma) >= 2 and len(self.slow_ma) >= 2:\\n                    if self.fast_ma[-2] >= self.slow_ma[-2] and self.fast_ma[-1] < self.slow_ma[-1]:\\n                        self.position = None\\n                        return {\\\"action\\\": \\\"SELL\\\", \\\"quantity\\\": self.quantity, \\\"price\\\": None, \\\"order_type\\\": \\\"MARKET\\\", \\\"exit_reason\\\": \\\"MA_CROSSOVER\\\"}\\n            \\n            if self.position is None and len(self.fast_ma) >= 2 and len(self.slow_ma) >= 2:\\n                if self.fast_ma[-2] <= self.slow_ma[-2] and self.fast_ma[-1] > self.slow_ma[-1]:\\n                    self.position = \\\"LONG\\\"\\n                    self.entry_price = candle.close\\n                    return {\\\"action\\\": \\\"BUY\\\", \\\"quantity\\\": self.quantity, \\\"price\\\": None, \\\"order_type\\\": \\\"MARKET\\\", \\\"stop_loss\\\": self.entry_price * (1 - self.stop_loss_pct), \\\"take_profit\\\": self.entry_price * (1 + self.take_profit_pct)}\\n        \\n        return None\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/strategies/upload",
+              "host": ["{{base_url}}"],
+              "path": ["strategies", "upload"]
+            }
+          }
+        },
+        {
+          "name": "List Strategies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/strategies",
+              "host": ["{{base_url}}"],
+              "path": ["strategies"]
+            }
+          }
+        },
+        {
+          "name": "Get Strategy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/strategies/1",
+              "host": ["{{base_url}}"],
+              "path": ["strategies", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Backtesting",
+      "item": [
+        {
+          "name": "Run Backtest",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"strategy_id\": 1,\n  \"broker\": \"binance\",\n  \"symbol\": \"BTCUSDT\",\n  \"interval\": \"1h\",\n  \"limit\": 500,\n  \"initial_capital\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/strategies/backtest/run",
+              "host": ["{{base_url}}"],
+              "path": ["strategies", "backtest", "run"]
+            }
+          }
+        },
+        {
+          "name": "List Backtest Results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/strategies/backtest/results",
+              "host": ["{{base_url}}"],
+              "path": ["strategies", "backtest", "results"]
+            }
+          }
+        },
+        {
+          "name": "Get Backtest Result",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/strategies/backtest/results/1",
+              "host": ["{{base_url}}"],
+              "path": ["strategies", "backtest", "results", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    }
+  ]
+}

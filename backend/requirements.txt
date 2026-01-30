@@ -1,0 +1,24 @@
+# FastAPI and server
+fastapi>=0.104.1
+uvicorn[standard]>=0.30.0  # Updated for Python 3.13 compatibility
+
+# Database
+sqlalchemy>=2.0.45  # Updated for Python 3.13 compatibility
+psycopg2-binary>=2.9.11  # Updated for Python 3.13 wheel support
+
+# Authentication
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.6
+
+# Data validation (updated for Python 3.13 compatibility - has pre-built wheels)
+pydantic>=2.11.5
+pydantic-settings>=2.1.0
+email-validator>=2.1.1
+
+# HTTP client (for broker APIs)
+httpx>=0.25.2
+aiohttp>=3.13.3  # Updated for Python 3.13 wheel support
+
+# Utilities
+python-dotenv>=1.0.0
