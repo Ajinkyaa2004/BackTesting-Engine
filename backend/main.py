@@ -1,6 +1,7 @@
 """
 Main FastAPI application entry point.
 """
+import os
 import traceback
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,10 +29,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS middleware for development
+# CORS middleware configuration
+# In production, set CORS_ORIGINS environment variable to your frontend URL
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
+origins = [origin.strip() for origin in CORS_ORIGINS.split(",")] if CORS_ORIGINS != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
