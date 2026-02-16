@@ -1,345 +1,479 @@
+<div align="center">
+
+<!-- Add your project logo/banner here -->
+<!-- ![Backtesting Engine Banner](./assets/banner.png) -->
+
 # 📈 Backtesting Engine
 
-A professional algorithmic trading backtesting platform with strategy management, broker integration, and comprehensive performance analytics.
+### Professional Algorithmic Trading Platform for Strategy Development & Testing
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
-[![Next.js](https://img.shields.io/badge/Next.js-16.1-black.svg)](https://nextjs.org/)
-[![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://www.python.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.1-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Python](https://img.shields.io/badge/Python-3.13+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[Features](#-features) • [Demo](#-demo) • [Installation](#-installation) • [Documentation](#-documentation) • [Contributing](#-contributing)
+
+</div>
+
+---
+
+## 🎯 Overview
+
+A full-stack web application that enables traders and quantitative analysts to **develop, test, and analyze algorithmic trading strategies** with real market data. Built with modern technologies and production-ready architecture.
+
+### ✨ Why This Platform?
+
+| Feature | Description |
+|---------|-------------|
+| 🎨 **No Coding Required** | Use pre-built strategy templates with visual configuration |
+| 🔌 **Multi-Broker Support** | Integrate with Binance, Zerodha, and more |
+| 📊 **Real-Time Data** | Test with both historical and real-time market data |
+| 📈 **Advanced Analytics** | Sharpe ratio, drawdown analysis, win rate, and more |
+| 🔒 **Secure & Scalable** | JWT authentication, PostgreSQL database, cloud-ready |
+| ⚡ **Production-Ready** | Built with FastAPI, Next.js, and enterprise patterns |
 
 ---
 
 ## 🚀 Quick Start
 
-**New to the project?** Start here: [START_HERE.md](./START_HERE.md)
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd Backtesting_Engine-main
 
-**Deploy in 5 minutes:** [QUICK_DEPLOY.md](./QUICK_DEPLOY.md)
+# Backend setup
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+# Frontend setup (in new terminal)
+cd frontend
+npm install
+npm run dev
+```
+
+**📖 Complete Guide**: [START_HERE.md](./START_HERE.md) | **☁️ Deploy in 5 min**: [QUICK_DEPLOY.md](./QUICK_DEPLOY.md)
+
+---
+
+## 🎬 Demo
+
+> **Live Demo**: [Coming Soon]  
+> **Video Walkthrough**: [Coming Soon]
+
+### Screenshots
+
+<details>
+<summary>Click to view screenshots</summary>
+
+#### Dashboard
+> Add screenshot: Dashboard with portfolio overview and recent backtests
+
+#### Strategy Editor
+> Add screenshot: Monaco Editor with strategy code
+
+#### Backtest Results
+> Add screenshot: Performance charts and metrics
+
+</details>
 
 ---
 
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
+- [Demo](#-demo)
 - [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Prerequisites](#-prerequisites)
+- [Tech Stack](#️-tech-stack)
+- [Architecture](#️-architecture)
 - [Installation](#-installation)
 - [Usage](#-usage)
-- [Project Structure](#-project-structure)
 - [API Documentation](#-api-documentation)
 - [Strategy Development](#-strategy-development)
 - [Deployment](#-deployment)
 - [Testing](#-testing)
 - [Documentation](#-documentation)
+- [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
+- [Support](#-support)
 - [License](#-license)
-
----
-
-## 🎯 Overview
-
-The Backtesting Engine is a full-stack web application that allows traders and quantitative analysts to develop, test, and analyze algorithmic trading strategies across multiple brokers and markets. With built-in technical indicators, customizable strategy templates, and detailed performance metrics, it provides a professional environment for strategy development and validation.
-
-### Why Use This Platform?
-
-- **No Coding Required**: Use pre-built strategy templates with visual configuration
-- **Multi-Broker Support**: Integrate with popular brokers (Binance, Zerodha, etc.)
-- **Real-Time & Historical Data**: Test strategies with both real-time and historical market data
-- **Comprehensive Analytics**: Detailed performance metrics, drawdown analysis, and trade-by-trade breakdowns
-- **Production-Ready**: Built with enterprise-grade technologies (FastAPI, Next.js, PostgreSQL)
-- **Secure & Scalable**: JWT authentication, role-based access, and cloud-ready architecture
 
 ---
 
 ## ✨ Features
 
-### Core Functionality
+<table>
+<tr>
+<td width="50%">
 
-- **Strategy Management**
-  - Custom Python strategy development with base classes
-  - Pre-built strategy templates (MA Crossover, RSI Mean Reversion, MACD Momentum)
-  - Code editor with syntax highlighting (Monaco Editor)
-  - Strategy versioning and history
-  - Import/export strategies
+### 🎯 Strategy Management
+- Custom Python strategy development
+- Pre-built templates (MA, RSI, MACD)
+- Monaco code editor with syntax highlighting
+- Strategy versioning & import/export
+- Real-time validation
 
-- **Backtesting Engine**
-  - High-performance backtesting with event-driven architecture
-  - Support for multiple timeframes (1m, 5m, 15m, 1h, 4h, 1d)
-  - Position management with risk controls
-  - Transaction cost modeling
-  - Slippage simulation
+### 🔌 Broker Integration
+- Binance (Spot & Futures)
+- Extensible broker framework
+- Secure API key management
+- Real-time & historical data
 
-- **Broker Integration**
-  - Binance integration (Spot & Futures)
-  - Extensible broker framework for adding new brokers
-  - API key management with encryption
-  - Real-time and historical data fetching
+### 📊 Performance Analytics
+- Sharpe & Sortino ratios
+- Maximum drawdown analysis
+- Win rate & profit factor
+- Trade distribution metrics
+- Interactive equity curves
 
-- **Performance Analytics**
-  - Total return, Sharpe ratio, Sortino ratio
-  - Maximum drawdown and recovery analysis
-  - Win rate, profit factor, expectancy
-  - Trade distribution and holding period analysis
-  - Equity curve visualization
+</td>
+<td width="50%">
 
-- **User Management**
-  - JWT-based authentication
-  - User registration and login
-  - Secure password hashing (bcrypt)
-  - Protected routes and API endpoints
+### ⚡ Backtesting Engine
+- Event-driven architecture
+- Multiple timeframes support
+- Position & risk management
+- Transaction cost modeling
+- Slippage simulation
 
-### UI/UX Features
+### 🎨 Modern UI/UX
+- Responsive dashboard
+- Real-time portfolio overview
+- Interactive charts (Recharts)
+- Detailed trade logs
+- CSV/JSON export
 
-- **Modern Dashboard**
-  - Real-time portfolio overview
-  - Recent backtests and strategies
-  - Performance charts (Recharts)
-  - Responsive design (Tailwind CSS)
+### 🔒 Security & Auth
+- JWT authentication
+- Bcrypt password hashing
+- Protected API endpoints
+- Role-based access control
+- Encrypted credentials
 
-- **Strategy Editor**
-  - Monaco Editor integration
-  - Syntax highlighting and autocomplete
-  - Strategy validation and error checking
-  - Template selection
-
-- **Backtest Results**
-  - Interactive charts and tables
-  - Detailed trade logs
-  - Performance metrics dashboard
-  - Export results to CSV/JSON
+</td>
+</tr>
+</table>
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Backend
+<div align="center">
 
-- **Framework**: FastAPI 0.104+
-- **Language**: Python 3.13+
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Authentication**: JWT (python-jose) with bcrypt
-- **Async Support**: httpx, aiohttp for broker APIs
-- **Validation**: Pydantic v2
-- **Server**: Uvicorn (ASGI)
+### Backend
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge&logo=sql&logoColor=white)
 
 ### Frontend
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-- **Framework**: Next.js 16.1 (App Router)
-- **Language**: TypeScript 5.0+
-- **UI Library**: React 19.2
-- **Styling**: Tailwind CSS 4.0
-- **Components**: Radix UI primitives
-- **Code Editor**: Monaco Editor
-- **Charts**: Recharts
-- **HTTP Client**: Axios
-- **Icons**: Lucide React
+### DevOps
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-### DevOps & Deployment
+</div>
 
-- **Platforms**: Vercel (Frontend), Railway/Render (Backend)
-- **Database**: PostgreSQL (Render/Railway)
-- **Environment**: Docker-ready (optional)
+<details>
+<summary><b>📦 Complete Technology Breakdown</b></summary>
+
+#### Backend Technologies
+- **Framework**: FastAPI 0.104+ (async support, automatic docs)
+- **Language**: Python 3.13+ (type hints, modern features)
+- **Database**: PostgreSQL 14+ with SQLAlchemy 2.0 ORM
+- **Authentication**: JWT (python-jose) with bcrypt hashing
+- **HTTP Clients**: httpx, aiohttp for async broker APIs
+- **Validation**: Pydantic v2 for data validation
+- **Server**: Uvicorn (high-performance ASGI server)
+
+#### Frontend Technologies
+- **Framework**: Next.js 16.1 with App Router
+- **Language**: TypeScript 5.0+ (strict mode)
+- **UI Library**: React 19.2 with server components
+- **Styling**: Tailwind CSS 4.0 (utility-first)
+- **Components**: Radix UI primitives (accessible)
+- **Code Editor**: Monaco Editor (VS Code engine)
+- **Charts**: Recharts (responsive charts)
+- **HTTP Client**: Axios with interceptors
+- **Icons**: Lucide React (optimized icons)
+
+#### DevOps & Infrastructure
+- **Frontend Hosting**: Vercel (serverless, CDN)
+- **Backend Hosting**: Railway/Render (containers)
+- **Database**: Managed PostgreSQL (Render/Railway/Supabase)
+- **Containerization**: Docker & Docker Compose
 - **CI/CD**: GitHub Actions (optional)
+- **Monitoring**: Built-in health checks
+
+</details>
 
 ---
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                         Frontend (Next.js)                   │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
-│  │  Dashboard  │  │  Strategies  │  │  Backtest Results│   │
-│  └─────────────┘  └──────────────┘  └──────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-                            │ (REST API)
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Backend (FastAPI)                       │
-│  ┌──────────┐  ┌─────────────┐  ┌──────────────────────┐   │
-│  │   Auth   │  │  Strategies │  │  Backtest Engine     │   │
-│  │  Module  │  │   Manager   │  │  (Event-Driven)      │   │
-│  └──────────┘  └─────────────┘  └──────────────────────┘   │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │           Broker Factory & Integrations              │   │
-│  │  (Binance, Zerodha, Custom Brokers)                  │   │
-│  └──────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│              PostgreSQL Database (SQLAlchemy)                │
-│  ┌──────┐  ┌────────────┐  ┌────────────┐                  │
-│  │ Users│  │ Strategies │  │ Backtests  │                  │
-│  └──────┘  └────────────┘  └────────────┘                  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph "Frontend Layer"
+        A[Next.js App Router]
+        B[Dashboard UI]
+        C[Strategy Editor]
+        D[Backtest Results]
+    end
+    
+    subgraph "Backend Layer"
+        E[FastAPI Server]
+        F[Auth Module]
+        G[Strategy Manager]
+        H[Backtest Engine]
+        I[Broker Factory]
+    end
+    
+    subgraph "Data Layer"
+        J[(PostgreSQL)]
+        K[Users]
+        L[Strategies]
+        M[Backtests]
+    end
+    
+    subgraph "External Services"
+        N[Binance API]
+        O[Other Brokers]
+    end
+    
+    A --> E
+    B --> E
+    C --> E
+    D --> E
+    E --> F
+    E --> G
+    E --> H
+    E --> I
+    F --> J
+    G --> J
+    H --> J
+    I --> N
+    I --> O
+    J --> K
+    J --> L
+    J --> M
 ```
 
-### Key Design Patterns
+### 🎨 Design Patterns
 
-- **Event-Driven Backtesting**: Processes market data sequentially for realistic simulation
-- **Strategy Base Class**: Extensible framework for custom strategy development
-- **Broker Factory Pattern**: Unified interface for multiple broker integrations
-- **Repository Pattern**: Database abstraction for clean separation of concerns
-- **JWT Middleware**: Stateless authentication for API security
+| Pattern | Implementation | Purpose |
+|---------|---------------|---------|
+| **Event-Driven** | Backtesting Engine | Realistic market simulation |
+| **Factory Pattern** | Broker integrations | Unified multi-broker interface |
+| **Repository Pattern** | Database abstraction | Clean separation of concerns |
+| **Strategy Pattern** | Base strategy class | Extensible strategy framework |
+| **Middleware** | JWT authentication | Stateless API security |
 
 ---
 
-## 📦 Prerequisites
+## 💻 Installation
 
-Before you begin, ensure you have the following installed:
+### Prerequisites
 
-### For Backend:
-- **Python 3.13+** (3.11+ also supported)
-- **PostgreSQL 14+** (or use cloud-hosted database)
-- **pip** (Python package manager)
+> **Required**: Python 3.11+, Node.js 20+, PostgreSQL 14+  
+> **Optional**: Docker, Git
 
-### For Frontend:
-- **Node.js 20+** (LTS version recommended)
-- **npm** or **yarn** or **pnpm**
+### Quick Setup
 
-### Optional:
-- **Git** (for version control)
-- **Docker** (for containerized deployment)
-
----
-
-## 🔧 Installation
-
-### 1. Clone the Repository
-
+#### 1️⃣ Clone Repository
 ```bash
-git clone <repository-url>
+git clone <your-repo-url>
 cd Backtesting_Engine-main
 ```
 
-### 2. Backend Setup
-
+#### 2️⃣ Backend Setup
 ```bash
-# Navigate to backend directory
 cd backend
-
-# Create virtual environment
 python -m venv venv
-
-# Activate virtual environment
-# On macOS/Linux:
-source venv/bin/activate
-# On Windows:
-venv\Scripts\activate
-
-# Install dependencies
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-
-# Create .env file
-cp .env.example .env
 ```
 
-**Configure `.env` file:**
-
+Create `.env` file:
 ```env
-# Database
 DATABASE_URL=postgresql://user:password@localhost:5432/backtesting_db
-
-# JWT Authentication
-SECRET_KEY=your-secret-key-here-generate-with-openssl-rand-hex-32
+SECRET_KEY=your-secret-key-generate-with-openssl-rand-hex-32
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# CORS (for development)
 CORS_ORIGINS=http://localhost:3000
-
-# Broker API Keys (optional for testing)
-BINANCE_API_KEY=your-binance-api-key
-BINANCE_API_SECRET=your-binance-api-secret
 ```
 
-**Initialize Database:**
-
+Start backend:
 ```bash
-# Database tables are created automatically on first run
-# Or run migrations if available
-python -m alembic upgrade head
+uvicorn main:app --reload
 ```
+> ✅ Backend: http://localhost:8000 | 📚 API Docs: http://localhost:8000/docs
 
-**Start Backend Server:**
-
+#### 3️⃣ Frontend Setup
 ```bash
-# Development mode
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-
-# Production mode
-uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
-```
-
-Backend will be available at: `http://localhost:8000`  
-API Documentation: `http://localhost:8000/docs`
-
-### 3. Frontend Setup
-
-```bash
-# Navigate to frontend directory
-cd ../frontend
-
-# Install dependencies
+cd frontend
 npm install
-# or
-yarn install
-# or
-pnpm install
-
-# Create .env.local file
-cp .env.example .env.local
 ```
 
-**Configure `.env.local` file:**
-
+Create `.env.local` file:
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-**Start Frontend Development Server:**
-
+Start frontend:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
+> ✅ Frontend: http://localhost:3000
+
+<details>
+<summary><b>🐳 Docker Setup (Alternative)</b></summary>
+
+```bash
+# Coming soon - Docker Compose configuration
+docker-compose up -d
 ```
 
-Frontend will be available at: `http://localhost:3000`
+</details>
+
+<details>
+<summary><b>🔧 Detailed Setup Instructions</b></summary>
+
+### Database Setup
+
+**Option 1: Local PostgreSQL**
+```bash
+# macOS
+brew install postgresql
+brew services start postgresql
+createdb backtesting_db
+
+# Ubuntu/Debian
+sudo apt install postgresql
+sudo systemctl start postgresql
+sudo -u postgres createdb backtesting_db
+```
+
+**Option 2: Cloud Database**
+- Use [Supabase](https://supabase.com) (free tier)
+- Use [Railway](https://railway.app) (free tier)
+- Use [Render](https://render.com) (free tier)
+
+### Environment Variables
+
+Generate secure SECRET_KEY:
+```bash
+openssl rand -hex 32
+```
+
+### Database Migrations
+```bash
+cd backend
+# Tables are auto-created on first run
+# Or use Alembic for migrations:
+python -m alembic upgrade head
+```
+
+### Common Issues
+
+**Port already in use:**
+```bash
+# Backend: Change port
+uvicorn main:app --reload --port 8001
+
+# Frontend: Change port in package.json
+npm run dev -- -p 3001
+```
+
+**Database connection error:**
+- Check PostgreSQL is running: `pg_isready`
+- Verify DATABASE_URL format
+- Test connection: `psql $DATABASE_URL`
+
+</details>
 
 ---
 
 ## 🎮 Usage
 
-### 1. Register an Account
+### Getting Started Workflow
 
-- Navigate to `http://localhost:3000/register`
-- Create a new account with email and password
+```mermaid
+graph LR
+    A[Register Account] --> B[Connect Broker]
+    B --> C[Create Strategy]
+    C --> D[Run Backtest]
+    D --> E[Analyze Results]
+    style A fill:#e1f5ff
+    style C fill:#fff4e1
+    style D fill:#e8f5e9
+    style E fill:#fce4ec
+```
+
+### 1️⃣ Register an Account
+
+Navigate to `http://localhost:3000/register` and create your account:
+- Enter email and password
+- Confirm registration
 - Login with your credentials
 
-### 2. Configure Broker Connection (Optional)
+### 2️⃣ Configure Broker Connection (Optional)
 
-- Go to Settings or Broker Configuration
-- Add your broker API credentials (e.g., Binance)
-- Test connection to ensure it works
+<details>
+<summary>Setup broker API credentials</summary>
 
-### 3. Create a Strategy
+1. Navigate to Settings → Broker Configuration
+2. Select your broker (e.g., Binance)
+3. Add API credentials:
+   - API Key
+   - API Secret
+4. Test connection
+5. Save configuration
 
-**Option A: Use a Template**
-- Navigate to Strategies → New Strategy
-- Select a template (MA Crossover, RSI Mean Reversion, MACD)
-- Customize parameters
-- Save strategy
+> **Note**: This step is optional for testing with demo data
 
-**Option B: Write Custom Python Code**
-- Navigate to Strategies → New Strategy
-- Choose "Custom" template
-- Write your strategy using the base class:
+</details>
 
+### 3️⃣ Create a Strategy
+
+<table>
+<tr>
+<td width="50%">
+
+#### Option A: Use Template 🎨
+1. Navigate to **Strategies → New Strategy**
+2. Select a pre-built template:
+   - MA Crossover
+   - RSI Mean Reversion
+   - MACD Momentum
+3. Customize parameters
+4. Save strategy
+
+</td>
+<td width="50%">
+
+#### Option B: Custom Code 💻
+1. Navigate to **Strategies → New Strategy**
+2. Choose **"Custom"** template
+3. Write Python strategy code
+4. Validate syntax
+5. Save strategy
+
+</td>
+</tr>
+</table>
+
+**Example Strategy Code:**
 ```python
 from strategies.base import BaseStrategy
 
@@ -357,28 +491,34 @@ class MyStrategy(BaseStrategy):
         return True  # or False
 ```
 
-See [STRATEGY_FORMAT_GUIDE.md](./backend/STRATEGY_FORMAT_GUIDE.md) for details.
+> 📖 **Learn More**: [STRATEGY_FORMAT_GUIDE.md](./backend/STRATEGY_FORMAT_GUIDE.md)
 
-### 4. Run a Backtest
+### 4️⃣ Run a Backtest
 
-- Navigate to your saved strategy
-- Click "Run Backtest"
-- Configure parameters:
-  - Symbol (e.g., BTC/USDT)
-  - Timeframe (1m, 5m, 1h, 1d)
-  - Date range
-  - Initial capital
-  - Position size
-- Click "Start Backtest"
-- View results in real-time
+1. Navigate to your saved strategy
+2. Click **"Run Backtest"** button
+3. Configure backtest parameters:
 
-### 5. Analyze Results
+| Parameter | Example | Description |
+|-----------|---------|-------------|
+| **Symbol** | BTC/USDT | Trading pair |
+| **Timeframe** | 1h | Candle interval (1m, 5m, 1h, 1d) |
+| **Date Range** | 2024-01-01 to 2024-12-31 | Historical period |
+| **Initial Capital** | $10,000 | Starting balance |
+| **Position Size** | 10% | Percentage per trade |
 
-- View performance metrics dashboard
-- Analyze equity curve
-- Review trade-by-trade breakdown
-- Export results for further analysis
-- Compare multiple backtests
+4. Click **"Start Backtest"**
+5. View real-time progress and results
+
+### 5️⃣ Analyze Results
+
+View comprehensive performance analytics:
+
+- 📊 **Performance Metrics**: Return, Sharpe ratio, max drawdown
+- 📈 **Equity Curve**: Visual portfolio growth
+- 📝 **Trade Log**: Detailed trade-by-trade breakdown
+- 💾 **Export**: Download results as CSV/JSON
+- 🔄 **Compare**: Side-by-side backtest comparison
 
 ---
 
@@ -669,23 +809,115 @@ Import [backend/POSTMAN_COLLECTION.json](./backend/POSTMAN_COLLECTION.json) to t
 
 ---
 
+## 🗺️ Roadmap
+
+### ✅ Completed
+- [x] Core backtesting engine with event-driven architecture
+- [x] User authentication and authorization
+- [x] Strategy management system
+- [x] Binance integration
+- [x] Performance analytics dashboard
+- [x] Monaco code editor integration
+
+### 🚧 In Progress
+- [ ] Paper trading mode (simulated live trading)
+- [ ] Additional broker integrations (Zerodha, Alpaca)
+- [ ] Strategy marketplace
+- [ ] Mobile responsive improvements
+
+### 📅 Planned Features
+- [ ] Real-time trading (live execution)
+- [ ] Portfolio optimization tools
+- [ ] Machine learning strategy builder
+- [ ] Social features (strategy sharing, leaderboards)
+- [ ] Advanced charting with TradingView integration
+- [ ] Webhook notifications (Discord, Telegram)
+- [ ] Multi-currency support
+- [ ] Options & futures strategies
+
+**💡 Have a feature request?** [Open an issue](../../issues/new) with the `enhancement` label.
+
+---
+
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these guidelines:
+<div align="center">
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Commit your changes**: `git commit -m 'Add amazing feature'`
-4. **Push to the branch**: `git push origin feature/amazing-feature`
-5. **Open a Pull Request**
+### We welcome contributions! 🎉
 
-### Development Guidelines
+[![Contributors](https://img.shields.io/github/contributors/yourusername/backtesting-engine?style=for-the-badge)](../../graphs/contributors)
+[![Issues](https://img.shields.io/github/issues/yourusername/backtesting-engine?style=for-the-badge)](../../issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/yourusername/backtesting-engine?style=for-the-badge)](../../pulls)
 
-- Follow PEP 8 for Python code
-- Use TypeScript for all frontend code
-- Write tests for new features
-- Update documentation as needed
-- Ensure all tests pass before submitting PR
+</div>
+
+### How to Contribute
+
+1. **🍴 Fork the repository**
+2. **🔀 Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **✍️ Make your changes**
+4. **✅ Test your changes**
+   ```bash
+   # Backend tests
+   cd backend && pytest
+   
+   # Frontend linting
+   cd frontend && npm run lint
+   ```
+5. **💬 Commit with clear messages**
+   ```bash
+   git commit -m 'feat: Add amazing feature'
+   ```
+6. **📤 Push to your fork**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+7. **🎯 Open a Pull Request**
+
+### Contribution Guidelines
+
+<table>
+<tr>
+<td>
+
+#### Code Style
+- **Python**: Follow [PEP 8](https://pep8.org/)
+- **TypeScript**: Use ESLint config
+- **Commits**: Use [Conventional Commits](https://www.conventionalcommits.org/)
+
+</td>
+<td>
+
+#### Pull Requests
+- Link related issues
+- Add tests for new features
+- Update documentation
+- Keep PRs focused and small
+
+</td>
+</tr>
+</table>
+
+### Development Setup
+
+```bash
+# Install pre-commit hooks
+pip install pre-commit
+pre-commit install
+
+# Run tests
+cd backend && pytest --cov
+cd frontend && npm test
+
+# Format code
+cd backend && black . && isort .
+cd frontend && npm run format
+```
+
+**📖 Read our [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.**
 
 ---
 
@@ -738,28 +970,105 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📧 Support
+## � Support
 
-For questions and support:
+<div align="center">
 
-- 📖 Check the [documentation files](./START_HERE.md)
-- 🐛 Report bugs via GitHub Issues
-- 💬 Discussions via GitHub Discussions
-- 📧 Email: support@example.com (update with your contact)
+### Need Help?
+
+[![Documentation](https://img.shields.io/badge/📖_Documentation-Read_Docs-blue?style=for-the-badge)](./START_HERE.md)
+[![Issues](https://img.shields.io/badge/🐛_Report_Bug-GitHub_Issues-red?style=for-the-badge)](../../issues/new)
+[![Discussions](https://img.shields.io/badge/💬_Ask_Question-GitHub_Discussions-green?style=for-the-badge)](../../discussions)
+
+</div>
+
+### 📚 Resources
+
+<table>
+<tr>
+<td width="50%">
+
+#### Documentation
+- [📖 START_HERE.md](./START_HERE.md) - Getting started
+- [🚀 QUICK_DEPLOY.md](./QUICK_DEPLOY.md) - Quick deployment
+- [📊 STRATEGY_FORMAT_GUIDE.md](./backend/STRATEGY_FORMAT_GUIDE.md) - Strategy development
+- [🧪 POSTMAN_TESTING_GUIDE.md](./backend/POSTMAN_TESTING_GUIDE.md) - API testing
+
+</td>
+<td width="50%">
+
+#### Learning Resources
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Algorithmic Trading Guide](https://www.investopedia.com/algorithmic-trading-4427730)
+- [Technical Analysis Basics](https://www.investopedia.com/terms/t/technicalanalysis.asp)
+
+</td>
+</tr>
+</table>
+
+### 🐛 Found a Bug?
+
+1. Check [existing issues](../../issues) first
+2. Include steps to reproduce
+3. Provide error messages/screenshots
+4. Mention your environment (OS, Python version, etc.)
+
+### 💡 Feature Requests
+
+Have an idea? [Open a discussion](../../discussions/new) in the Ideas category!
 
 ---
 
-## 🎓 Learning Resources
+## ⭐ Show Your Support
 
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Quantitative Trading Basics](https://www.investopedia.com/algorithmic-trading-4427730)
-- [Technical Analysis](https://www.investopedia.com/terms/t/technicalanalysis.asp)
+<div align="center">
+
+If this project helped you, please consider giving it a ⭐!
+
+[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/backtesting-engine&type=Date)](../../stargazers)
+
+### Share with the community!
+
+[![Twitter](https://img.shields.io/badge/Share_on-Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/intent/tweet?text=Check%20out%20this%20awesome%20algorithmic%20trading%20backtesting%20platform!&url=https://github.com/yourusername/backtesting-engine)
+[![LinkedIn](https://img.shields.io/badge/Share_on-LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/yourusername/backtesting-engine)
+
+</div>
+
+---
+
+## 🙏 Acknowledgments
+
+Built with amazing open-source technologies:
+
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
+- [Next.js](https://nextjs.org/) - React framework for production
+- [PostgreSQL](https://www.postgresql.org/) - Advanced open-source database
+- [Recharts](https://recharts.org/) - Composable charting library
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/) - VS Code's editor
+- [Radix UI](https://www.radix-ui.com/) - Accessible UI primitives
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+
+---
+
+<div align="center">
+
+## 📄 License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 **Made with ❤️ for algorithmic traders and quantitative analysts**
 
+⭐ Star us on GitHub — it motivates us a lot!
+
+[⬆ Back to Top](#-backtesting-engine)
+
 ---
 
 *Last Updated: February 2026*
+
+</div>
