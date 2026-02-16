@@ -101,7 +101,6 @@ npm run dev
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
 - [Support](#-support)
-- [License](#-license)
 
 ---
 
@@ -921,154 +920,25 @@ cd frontend && npm run format
 
 ---
 
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**1. Database Connection Error**
-```
-Solution: Check DATABASE_URL in .env file
-Ensure PostgreSQL is running
-```
-
-**2. CORS Error in Frontend**
-```
-Solution: Add frontend URL to CORS_ORIGINS in backend .env
-```
-
-**3. JWT Token Invalid**
-```
-Solution: Ensure SECRET_KEY matches between login and verification
-Check token expiration time
-```
-
-**4. Strategy Import Error**
-```
-Solution: Verify strategy code syntax
-Check all imports are available
-Ensure BaseStrategy is inherited
-```
-
-For more issues, check existing GitHub issues or create a new one.
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **FastAPI** - Modern Python web framework
-- **Next.js** - React framework for production
-- **Recharts** - Charting library for React
-- **Monaco Editor** - Code editor by Microsoft
-- **Radix UI** - Unstyled, accessible UI components
-- **Tailwind CSS** - Utility-first CSS framework
-
----
-
 ## � Support
 
-<div align="center">
+### 📚 Documentation
+- [START_HERE.md](./START_HERE.md) - Getting started guide  
+- [QUICK_DEPLOY.md](./QUICK_DEPLOY.md) - Quick deployment
+- [STRATEGY_FORMAT_GUIDE.md](./backend/STRATEGY_FORMAT_GUIDE.md) - Strategy development
+- [POSTMAN_TESTING_GUIDE.md](./backend/POSTMAN_TESTING_GUIDE.md) - API testing
 
-### Need Help?
-
-[![Documentation](https://img.shields.io/badge/📖_Documentation-Read_Docs-blue?style=for-the-badge)](./START_HERE.md)
-[![Issues](https://img.shields.io/badge/🐛_Report_Bug-GitHub_Issues-red?style=for-the-badge)](../../issues/new)
-[![Discussions](https://img.shields.io/badge/💬_Ask_Question-GitHub_Discussions-green?style=for-the-badge)](../../discussions)
-
-</div>
-
-### 📚 Resources
-
-<table>
-<tr>
-<td width="50%">
-
-#### Documentation
-- [📖 START_HERE.md](./START_HERE.md) - Getting started
-- [🚀 QUICK_DEPLOY.md](./QUICK_DEPLOY.md) - Quick deployment
-- [📊 STRATEGY_FORMAT_GUIDE.md](./backend/STRATEGY_FORMAT_GUIDE.md) - Strategy development
-- [🧪 POSTMAN_TESTING_GUIDE.md](./backend/POSTMAN_TESTING_GUIDE.md) - API testing
-
-</td>
-<td width="50%">
-
-#### Learning Resources
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Algorithmic Trading Guide](https://www.investopedia.com/algorithmic-trading-4427730)
-- [Technical Analysis Basics](https://www.investopedia.com/terms/t/technicalanalysis.asp)
-
-</td>
-</tr>
-</table>
-
-### 🐛 Found a Bug?
-
-1. Check [existing issues](../../issues) first
-2. Include steps to reproduce
-3. Provide error messages/screenshots
-4. Mention your environment (OS, Python version, etc.)
-
-### 💡 Feature Requests
-
-Have an idea? [Open a discussion](../../discussions/new) in the Ideas category!
-
----
-
-## ⭐ Show Your Support
-
-<div align="center">
-
-If this project helped you, please consider giving it a ⭐!
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/backtesting-engine&type=Date)](../../stargazers)
-
-### Share with the community!
-
-[![Twitter](https://img.shields.io/badge/Share_on-Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/intent/tweet?text=Check%20out%20this%20awesome%20algorithmic%20trading%20backtesting%20platform!&url=https://github.com/yourusername/backtesting-engine)
-[![LinkedIn](https://img.shields.io/badge/Share_on-LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/yourusername/backtesting-engine)
-
-</div>
-
----
-
-## 🙏 Acknowledgments
-
-Built with amazing open-source technologies:
-
-- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
-- [Next.js](https://nextjs.org/) - React framework for production
-- [PostgreSQL](https://www.postgresql.org/) - Advanced open-source database
-- [Recharts](https://recharts.org/) - Composable charting library
-- [Monaco Editor](https://microsoft.github.io/monaco-editor/) - VS Code's editor
-- [Radix UI](https://www.radix-ui.com/) - Accessible UI primitives
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+### 🐛 Issues & Questions
+- Report bugs via [GitHub Issues](../../issues)
+- Ask questions in [GitHub Discussions](../../discussions)
 
 ---
 
 <div align="center">
-
-## 📄 License
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 **Made with ❤️ for algorithmic traders and quantitative analysts**
 
-⭐ Star us on GitHub — it motivates us a lot!
-
-[⬆ Back to Top](#-backtesting-engine)
-
----
-
-*Last Updated: February 2026*
+License: [MIT](LICENSE)
 
 </div>
+
